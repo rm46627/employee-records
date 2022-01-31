@@ -3,12 +3,12 @@ package reg;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-class Dyrektor extends Employee implements Serializable {
+class Director extends Employee implements Serializable {
 
     private BigDecimal bonus;
     private String businessCard;
 
-    public Dyrektor(){}
+    public Director(){}
 
     protected void setBonus(BigDecimal sum){
         bonus = sum;

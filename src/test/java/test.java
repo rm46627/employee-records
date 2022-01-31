@@ -3,9 +3,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import reg.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
@@ -40,7 +45,6 @@ class TestRegister {
         //then
         Assertions.assertEquals(result, register.employeeList.get(0));
         Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertFalse(register.employeeList.get(0).hasHeadship());
         Assertions.assertEquals(pesel, register.peselList.get(0));
     }
     //1.2
@@ -65,12 +69,11 @@ class TestRegister {
         //then
         Assertions.assertEquals(result, register.employeeList.get(0));
         Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertTrue(register.employeeList.get(0).hasHeadship());
         Assertions.assertEquals(pesel, register.peselList.get(0));
     }
     //1.3
     @Test
-    public void addHandlowiec_kontenerZawieraPracownikow(){
+    public void addTrader_RegisterNotEmpty(){
 
         //given
         String pesel = "98083006138";
@@ -98,13 +101,12 @@ class TestRegister {
 
         //then
         Assertions.assertEquals(result, register.employeeList.get(1));
-        Assertions.assertFalse(register.employeeList.get(1).hasHeadship());
         Assertions.assertEquals(2, register.employeeCounter);
         Assertions.assertEquals(pesel2, register.peselList.get(1));
     }
     //1.4
     @Test
-    public void addDyrektor_kontenerZawieraPracownikow() {
+    public void addDirector_RegisterNotEmpty() {
         //given
         String pesel = "98083006138";
         String name = "Mariusz";
@@ -131,13 +133,12 @@ class TestRegister {
 
         //then
         Assertions.assertEquals(result, register.employeeList.get(1));
-        Assertions.assertTrue(register.employeeList.get(1).hasHeadship());
         Assertions.assertEquals(2, register.employeeCounter);
         Assertions.assertEquals(pesel, register.peselList.get(1));
     }
     //1.5
     @Test
-    public void addPracownik_10LosowychPracownikow(){
+    public void add10Employees(){
 
         //given
         String pesel = "98083006138";
@@ -265,7 +266,7 @@ class TestRegister {
     }
     //1.6
     @Test
-    public void usunPracownika_Handlowiec_KontenerZawieraPracownikow() {
+    public void removeEmployee_Trader_RegisterNotEmpty() {
         //given
         String pesel = "98083006138";
         String name = "Mariusz";
@@ -298,7 +299,7 @@ class TestRegister {
     }
     //1.7
     @Test
-    public void usunPracownika_Dyrektor_KontenerZawieraPracownikow(){
+    public void removeEmployee_Director_RegisterNotEmpty(){
         //given
         String pesel = "98083006138";
         String name = "Mariusz";
@@ -345,118 +346,6 @@ class TestRegister {
         Assertions.assertFalse(validator.peselValidation(pesel));
     }
 
-    //1.9
-    @Test
-    public void saveBackup_Successful() {
-
-        //given
-        String pesel = "98083006138";
-        String name = "Mariusz";
-        String surname = "Budzynski";
-        BigDecimal salary = new BigDecimal(13000);
-        String num = "505980868";
-        BigDecimal bonus = new BigDecimal(1500);
-        String card = "1";
-        BigDecimal limit = new BigDecimal(3000);
-
-        String pesel2 = "98083006139";
-        String name2 = "Tadeusz";
-        String surname2 = "Drozda";
-        BigDecimal salary2 = new BigDecimal(3400);
-        String num2 = "505980868";
-        BigDecimal commision = new BigDecimal(3);
-        BigDecimal limit2 = new BigDecimal(250);
-
-        Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
-        register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
-
-        //when
-        Register resultOne = register.saveRegistryBackup(register, "pierwsza", "zip");
-        Register resultTwo = register.saveRegistryBackup(register, "pierwsza", "gz");
-
-        //then
-        Assertions.assertEquals(register, resultOne);
-        Assertions.assertEquals(register, resultTwo);
-    }
-
-    //1.10
-    @Test
-    public void readBackup_Successful_zip() throws IOException, ExecutionException, InterruptedException {
-        //given
-        String pesel = "98083006138";
-        String name = "Mariusz";
-        String surname = "Budzynski";
-        BigDecimal salary = new BigDecimal(13000);
-        String num = "505980868";
-        BigDecimal bonus = new BigDecimal(1500);
-        String card = "1";
-        BigDecimal limit = new BigDecimal(3000);
-
-        String pesel2 = "98083006139";
-        String name2 = "Tadeusz";
-        String surname2 = "Drozda";
-        BigDecimal salary2 = new BigDecimal(3400);
-        String num2 = "505980868";
-        BigDecimal commision = new BigDecimal(3);
-        BigDecimal limit2 = new BigDecimal(250);
-
-        Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
-        register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
-
-        //when
-        register.saveRegistryBackup(register,"druga", "zip");
-        Register result = register.readRegistryBackup("druga.zip");
-
-        //then
-        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(0));
-        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(1));
-    }
-
-    @Test
-    public void readBackup_Successful_gz() throws IOException, ExecutionException, InterruptedException {
-        //given
-        String pesel = "98083006138";
-        String name = "Mariusz";
-        String surname = "Budzynski";
-        BigDecimal salary = new BigDecimal(13000);
-        String num = "505980868";
-        BigDecimal bonus = new BigDecimal(1500);
-        String card = "1";
-        BigDecimal limit = new BigDecimal(3000);
-
-        String pesel2 = "98083006139";
-        String name2 = "Tadeusz";
-        String surname2 = "Drozda";
-        BigDecimal salary2 = new BigDecimal(3400);
-        String num2 = "505980868";
-        BigDecimal commision = new BigDecimal(3);
-        BigDecimal limit2 = new BigDecimal(250);
-
-        Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
-        register.addTrader(pesel2, name2, surname2, salary2,num2, commision, limit2);
-
-        //when
-        register.saveRegistryBackup(register, "druga", "gz");
-        Register result = register.readRegistryBackup("druga.tar.gz");
-
-        //then
-        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(0));
-        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(1));
-    }
-
-    //1.11 & 1.12
-    @Test
-    public void readBackup_Unsuccessful_throwsNoSuchFileException(){
-        //given
-        Register register = new Register();
-
-        //then
-        Assertions.assertThrows(NoSuchFileException.class, () -> register.readRegistryBackup("tenPlikNieIstnieje.zip"));
-    }
-
     @ParameterizedTest
     @MethodSource("provide2Parameters_peselUniqueness")
     void peselUniqueness_2strings(String pesel1, String pesel2, boolean result) {
@@ -499,7 +388,7 @@ class TestRegister {
     }
 
     @Test
-    public void czyKtosJestZatrudniony_pustyKontener(){
+    public void isRegistryEmpty_False(){
         //given
         Register register = new Register();
 
@@ -508,7 +397,7 @@ class TestRegister {
     }
 
     @Test
-    public void czyKtosJestZatrudniony_KontenerZawieraPracownikow(){
+    public void isRegistryEmpty_True(){
         //given
         String pesel = "98083006138";
         String name = "Tadeusz";
@@ -526,7 +415,7 @@ class TestRegister {
     }
 
     @Test
-    public void employeeList_zapelnionyKontener(){
+    public void employeeList_RegisterNotEmpty(){
         //given
         String pesel = "98083006138";
         String name = "Tadeusz";
@@ -547,19 +436,19 @@ class TestRegister {
     }
 
     @Test
-    public void employeeList_pustyKontener(){
+    public void employeeList_emptyRegister(){
         //given
         Register register = new Register();
 
         //when
-        Employee result = register.employeeList.get(0);
+        int result = register.employeeList.size();
 
         //then
-        Assertions.assertNull(result);
+        Assertions.assertEquals(0, result);
     }
 
     @Test
-    public void addPracownik(){
+    public void addEmployee(){
         //given
         String pesel = "98083006138";
         String name = "Mariusz";
@@ -583,8 +472,122 @@ class TestRegister {
     }
 
     @Test
-    public void odczytDanych(){
+    public void saveBackup_Successful() {
 
+        //given
+        String pesel = "98083006138";
+        String name = "Mariusz";
+        String surname = "Budzynski";
+        BigDecimal salary = new BigDecimal(13000);
+        String num = "505980868";
+        BigDecimal bonus = new BigDecimal(1500);
+        String card = "1";
+        BigDecimal limit = new BigDecimal(3000);
+
+        String pesel2 = "98083006139";
+        String name2 = "Tadeusz";
+        String surname2 = "Drozda";
+        BigDecimal salary2 = new BigDecimal(3400);
+        String num2 = "505980868";
+        BigDecimal commision = new BigDecimal(3);
+        BigDecimal limit2 = new BigDecimal(250);
+
+        Register register = new Register();
+        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
+
+        //when
+        Register resultOne = register.saveRegistryBackup(register, "pierwsza", "zip");
+        Register resultTwo = register.saveRegistryBackup(register, "pierwsza", "gz");
+
+        //then
+        Assertions.assertEquals(register, resultOne);
+        Assertions.assertEquals(register, resultTwo);
+
+        //end
+        File file = new File("pierwsza.zip");
+        file.delete();
+        File file2 = new File("pierwsza.tar.gz");
+        file2.delete();
+    }
+
+    @Test
+    public void readBackup_Successful_zip() throws IOException, ExecutionException, InterruptedException {
+        //given
+        String pesel = "98083006138";
+        String name = "Mariusz";
+        String surname = "Budzynski";
+        BigDecimal salary = new BigDecimal(13000);
+        String num = "505980868";
+        BigDecimal bonus = new BigDecimal(1500);
+        String card = "1";
+        BigDecimal limit = new BigDecimal(3000);
+
+        String pesel2 = "98083006139";
+        String name2 = "Tadeusz";
+        String surname2 = "Drozda";
+        BigDecimal salary2 = new BigDecimal(3400);
+        String num2 = "505980868";
+        BigDecimal commision = new BigDecimal(3);
+        BigDecimal limit2 = new BigDecimal(250);
+
+        Register register = new Register();
+        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
+
+        //when
+        register.saveRegistryBackup(register,"druga", "zip");
+        Register result = register.readRegistryBackup("druga.zip");
+
+        //then
+        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(0));
+        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(1));
+
+        //end
+        File file = new File("druga.zip");
+        file.delete();
+    }
+
+    @Test
+    public void readBackup_Successful_gz() throws IOException, ExecutionException, InterruptedException {
+        //given
+        String pesel = "98083006138";
+        String name = "Mariusz";
+        String surname = "Budzynski";
+        BigDecimal salary = new BigDecimal(13000);
+        String num = "505980868";
+        BigDecimal bonus = new BigDecimal(1500);
+        String card = "1";
+        BigDecimal limit = new BigDecimal(3000);
+
+        String pesel2 = "98083006139";
+        String name2 = "Tadeusz";
+        String surname2 = "Drozda";
+        BigDecimal salary2 = new BigDecimal(3400);
+        String num2 = "505980868";
+        BigDecimal commision = new BigDecimal(3);
+        BigDecimal limit2 = new BigDecimal(250);
+
+        Register register = new Register();
+        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addTrader(pesel2, name2, surname2, salary2,num2, commision, limit2);
+
+        //when
+        register.saveRegistryBackup(register, "druga", "gz");
+        Register result = register.readRegistryBackup("druga.tar.gz");
+
+        //then
+        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(0));
+        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(1));
+    }
+
+    @Test
+    public void readBackup_Unsuccessful_throwsNoSuchFileException(){
+        //given
+        Register register = new Register();
+
+        //then
+        Assertions.assertThrows(NoSuchFileException.class, () -> register.readRegistryBackup("tenPlikNieIstnieje.zip"));
     }
 
 }

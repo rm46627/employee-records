@@ -3,10 +3,10 @@ package reg;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-class Handlowiec extends Employee implements Serializable {
+class Trader extends Employee implements Serializable {
     private BigDecimal commision;
 
-    public Handlowiec(){}
+    public Trader(){}
 
     protected void setCommision(BigDecimal percent){
         commision = percent;

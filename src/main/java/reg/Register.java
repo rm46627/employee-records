@@ -32,21 +32,8 @@ public class Register implements Serializable {
     public Register() {
     }
 
-    /* weryfikacja pesel
-
-        while (true) {
-            boolean weryfikacja = nowy.setPesel(pesel);
-            boolean uniq = sprawdzUnikalnoscPesel(pesel);
-            if (!weryfikacja || !uniq) {
-                continue;
-            } else
-                nowy.setPesel(pesel);
-                break;
-            }
-     */
-
     public Employee addDirector(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal bonus, String card , BigDecimal limit) {
-        Dyrektor newEmp = new Dyrektor();
+        Director newEmp = new Director();
         newEmp.setHeadship();
         newEmp.setName(name);
         newEmp.setSurname(surname);
@@ -56,6 +43,7 @@ public class Register implements Serializable {
         newEmp.setBusinessCard(card);
         newEmp.setCostLimit(limit);
         newEmp.setPesel(pesel);
+        newEmp.setHashCode((pesel+name+surname+phoneNum+card+salary.toString()+limit.toString()+bonus.toString()).hashCode());
         peselList.add(pesel);
         employeeCounter++;
         employeeList.add(newEmp);
@@ -63,7 +51,7 @@ public class Register implements Serializable {
     }
 
     public Employee addTrader(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal commission, BigDecimal limit) {
-        Handlowiec newEmpl = new Handlowiec();
+        Trader newEmpl = new Trader();
         newEmpl.setName(name);
         newEmpl.setSurname(surname);
         newEmpl.setSalary(salary);
@@ -135,63 +123,22 @@ public class Register implements Serializable {
         return employeeList.size() != 0;
     }
 
-    public void saveEmployee(List<String> filepaths, Employee employee) throws IOException {
-        String filepath = "C:\\Users\\mrmaj\\OneDrive - Zachodniopomorski Uniwersytet Technologiczny w Szczecinie\\Dokumenty\\Intellij\\Java_lab\\lab12\\";
-        try {
-            String fileToZip = filepath + employee.getSurname();
-            FileOutputStream file = new FileOutputStream(fileToZip);
-            ObjectOutputStream out = new ObjectOutputStream(file);
-            out.writeObject(employee);
-            out.close();
-            file.close();
-            filepaths.add(fileToZip);
-        } catch (IOException e) {
-            System.out.print("IOExp");
-            e.printStackTrace();
-        }
+    public void saveEmployee(Employee employee) throws IOException {
+        String fileToZip = employee.getPesel();
+        FileOutputStream file = new FileOutputStream(fileToZip);
+        ObjectOutputStream out = new ObjectOutputStream(file);
+        out.writeObject(employee);
+        out.close();
+        file.close();
     }
 
-    public Register saveRegistryBackup(Register register, String filename, String gOrZ) {
-        if (employeeCounter != 0) {
-            String filepath = "C:\\Users\\mrmaj\\OneDrive - Zachodniopomorski Uniwersytet Technologiczny w Szczecinie\\Dokumenty\\Intellij\\Java_lab\\lab12\\";
-            List<String> filepaths = new ArrayList<>();
-            try {
-                //zapis plikow pracownikow
-                saveEmpleyeesFiles(filepaths);
-                //kompresja
-                if (gOrZ.equalsIgnoreCase("Z")) {
-                    zipCompression(filepath, filename, filepaths);
-                } else if (gOrZ.equalsIgnoreCase("G")) {
-                    gzipCompression(filepath, filename, filepaths);
-                } else {
-                    System.out.print("\t\tBledny wybor - powrot do menu.");
-                }
-            } catch (FileNotFoundException e) {
-                System.out.print("FileNotFoundExp");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.print("IOExp");
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                System.out.print("InterruptedExp");
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                System.out.print("ExecutionExp");
-                e.printStackTrace();
-            }
-        } else if (!register.isRegistryEmpty()) {
-            System.out.print("\t\tLista zatrudnionych jest pusta.");
-        }
-        return register;
-    }
-
-    private void saveEmpleyeesFiles(List<String> filepaths) throws InterruptedException, ExecutionException {
+    private void saveEmpleyeesFiles() throws InterruptedException, ExecutionException {
         List<CompletableFuture<Void>> cfList = new ArrayList<>(employeeCounter);
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         for (Employee prac : employeeList) {
             CompletableFuture<Void> pracownik = CompletableFuture.runAsync(() -> {
                 try {
-                    saveEmployee(filepaths, prac);
+                    saveEmployee(prac);
                 } catch (FileNotFoundException e) {
                     System.out.print("FileNotFoundExp");
                     e.printStackTrace();
@@ -207,8 +154,41 @@ public class Register implements Serializable {
         executorService.shutdown();
     }
 
-    private void gzipCompression(String filepath, String filename, List<String> filepaths) throws IOException {
-        Path output = Paths.get(filepath + filename + ".tar.gz");
+    public Register saveRegistryBackup(Register register, String filename, String gOrZ) {
+        if (employeeCounter != 0) {
+            List<String> filepaths = new ArrayList<>();
+            // dodanie nazw plików
+            for (String pesel : peselList){
+                filepaths.add(pesel);
+            }
+            try {
+                //zapis plikow pracownikow
+                saveEmpleyeesFiles();
+                //kompresja
+                if (gOrZ.equalsIgnoreCase("zip")) {
+                    zipCompression(filename, filepaths);
+                } else if (gOrZ.equalsIgnoreCase("gz")) {
+                    gzipCompression(filename, filepaths);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.print("FileNotFoundExp");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.print("IOExp");
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                System.out.print("InterruptedExp");
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                System.out.print("ExecutionExp");
+                e.printStackTrace();
+            }
+        }
+        return register;
+    }
+
+    private void gzipCompression(String filename, List<String> filepaths) throws IOException {
+        Path output = Paths.get(filename + ".tar.gz");
         try (OutputStream fOut = Files.newOutputStream(output);
              BufferedOutputStream buffOut = new BufferedOutputStream(fOut);
              GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(buffOut);
@@ -225,9 +205,9 @@ public class Register implements Serializable {
         }
     }
 
-    private void zipCompression(String filepath, String filename, List<String> filepaths) throws IOException {
+    private void zipCompression(String filename, List<String> filepaths) throws IOException {
         filename += ".zip";
-        FileOutputStream fos = new FileOutputStream(filepath + filename);
+        FileOutputStream fos = new FileOutputStream(filename);
         ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(fos));
         for (String filePath : filepaths) {
             File input = new File(filePath);
@@ -257,15 +237,12 @@ public class Register implements Serializable {
     }
 
     public Register readRegistryBackup(String filename) throws ExecutionException, IOException, InterruptedException {
-        String filepath = null;
         String extension = filename.substring(filename.length() - 2);
         Register newEwid = new Register();
-        byte[] buffer = new byte[1024];
         String dest = filename.substring(0, filename.indexOf("."));
-        File file = new File(filepath + dest);
+        File file = new File(dest);
         file.mkdir();
-        dest = filepath + dest;
-        InputStream fi = Files.newInputStream(Paths.get(filepath + filename));
+        InputStream fi = Files.newInputStream(Paths.get(filename));
         BufferedInputStream bi = new BufferedInputStream(fi);
 
         if (extension.equalsIgnoreCase("ip")) {
@@ -301,11 +278,13 @@ public class Register implements Serializable {
             thisPrac.get();
         }
 
+        // dodanie danych do rejestru
         for (CompletableFuture<Employee> item : cfList) {
             newEwid.addEmployee(item.get());
         }
         executorService.shutdown();
 
+        // usunięcie plików
         Files.walk(Paths.get(dest))
                 .sorted(Comparator.reverseOrder())
                 .map(Path::toFile)
@@ -333,4 +312,5 @@ public class Register implements Serializable {
             Files.copy(gzi, destPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
 }
