@@ -6,11 +6,7 @@ import reg.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
@@ -20,6 +16,7 @@ class TestRegister {
     static void setUpBeforeClass(){
         System.out.println( "The tests have started." );
     }
+
     @AfterAll
     static void tearDownAfterClass(){
         System.out.println( "The tests are complete." );
@@ -472,7 +469,7 @@ class TestRegister {
     }
 
     @Test
-    public void saveBackup_Successful() {
+    public void saveBackup_Successful() throws IOException, ExecutionException, InterruptedException {
 
         //given
         String pesel = "98083006138";
@@ -540,8 +537,8 @@ class TestRegister {
         Register result = register.readRegistryBackup("druga.zip");
 
         //then
-        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(0));
-        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(1));
+        Assertions.assertEquals(register.employeeList.get(0).getSurname(), result.employeeList.get(0).getSurname());
+        Assertions.assertEquals(register.employeeList.get(1).getSurname(), result.employeeList.get(1).getSurname());
 
         //end
         File file = new File("druga.zip");
@@ -577,8 +574,12 @@ class TestRegister {
         Register result = register.readRegistryBackup("druga.tar.gz");
 
         //then
-        Assertions.assertEquals(register.employeeList.get(0), result.employeeList.get(0));
-        Assertions.assertEquals(register.employeeList.get(1), result.employeeList.get(1));
+        Assertions.assertEquals(register.employeeList.get(0).getSurname(), result.employeeList.get(0).getSurname());
+        Assertions.assertEquals(register.employeeList.get(1).getSurname(), result.employeeList.get(1).getSurname());
+
+        //end
+        File file = new File("druga.tar.gz");
+        file.delete();
     }
 
     @Test
@@ -588,6 +589,10 @@ class TestRegister {
 
         //then
         Assertions.assertThrows(NoSuchFileException.class, () -> register.readRegistryBackup("tenPlikNieIstnieje.zip"));
+
+        //end
+        File file = new File("tenPlikNieIstnieje");
+        file.delete();
     }
 
 }

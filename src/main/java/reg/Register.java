@@ -43,7 +43,6 @@ public class Register implements Serializable {
         newEmp.setBusinessCard(card);
         newEmp.setCostLimit(limit);
         newEmp.setPesel(pesel);
-        newEmp.setHashCode((pesel+name+surname+phoneNum+card+salary.toString()+limit.toString()+bonus.toString()).hashCode());
         peselList.add(pesel);
         employeeCounter++;
         employeeList.add(newEmp);
@@ -108,7 +107,7 @@ public class Register implements Serializable {
         return false;
     }
 
-    public void removePesel(String oldPesel) {
+    private void removePesel(String oldPesel) {
         if (peselList.size() > 0) {
             for (String item : peselList) {
                 if (item.equals(oldPesel)) {
@@ -123,7 +122,7 @@ public class Register implements Serializable {
         return employeeList.size() != 0;
     }
 
-    public void saveEmployee(Employee employee) throws IOException {
+    private void saveEmployee(Employee employee) throws IOException {
         String fileToZip = employee.getPesel();
         FileOutputStream file = new FileOutputStream(fileToZip);
         ObjectOutputStream out = new ObjectOutputStream(file);
@@ -154,34 +153,14 @@ public class Register implements Serializable {
         executorService.shutdown();
     }
 
-    public Register saveRegistryBackup(Register register, String filename, String gOrZ) {
+    public Register saveRegistryBackup(Register register, String filename, String gOrZ) throws ExecutionException, InterruptedException, IOException {
         if (employeeCounter != 0) {
-            List<String> filepaths = new ArrayList<>();
-            // dodanie nazw plików
-            for (String pesel : peselList){
-                filepaths.add(pesel);
-            }
-            try {
-                //zapis plikow pracownikow
-                saveEmpleyeesFiles();
-                //kompresja
-                if (gOrZ.equalsIgnoreCase("zip")) {
-                    zipCompression(filename, filepaths);
-                } else if (gOrZ.equalsIgnoreCase("gz")) {
-                    gzipCompression(filename, filepaths);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.print("FileNotFoundExp");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.print("IOExp");
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                System.out.print("InterruptedExp");
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                System.out.print("ExecutionExp");
-                e.printStackTrace();
+            List<String> filepaths = new ArrayList<>(peselList);
+            saveEmpleyeesFiles();
+            if (gOrZ.equalsIgnoreCase("zip")) {
+                zipCompression(filename, filepaths);
+            } else if (gOrZ.equalsIgnoreCase("gz")) {
+                gzipCompression(filename, filepaths);
             }
         }
         return register;
@@ -226,7 +205,7 @@ public class Register implements Serializable {
         zipOut.close();
     }
 
-    public Employee readEmployee(String dest) throws IOException, ClassNotFoundException {
+    private Employee readEmployee(String dest) throws IOException, ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream(dest);
         ObjectInputStream in = new ObjectInputStream(fileIn);
         Employee input;
@@ -237,6 +216,7 @@ public class Register implements Serializable {
     }
 
     public Register readRegistryBackup(String filename) throws ExecutionException, IOException, InterruptedException {
+        // input stream
         String extension = filename.substring(filename.length() - 2);
         Register newEwid = new Register();
         String dest = filename.substring(0, filename.indexOf("."));
@@ -251,6 +231,7 @@ public class Register implements Serializable {
             unGzip(dest, bi);
         }
 
+        // wczytywanie plików
         List<CompletableFuture<Employee>> cfList = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(8);
 
@@ -262,14 +243,7 @@ public class Register implements Serializable {
             CompletableFuture<Employee> thisPrac = CompletableFuture.supplyAsync(() -> {
                 try {
                     thisFileOut[0] = readEmployee(pracownik.getAbsolutePath());
-                } catch (FileNotFoundException e) {
-                    System.out.print("FileNotFoundExp");
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    System.out.print("IOExp");
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    System.out.print("ClassNotFoundExp");
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 return thisFileOut[0];
@@ -279,8 +253,8 @@ public class Register implements Serializable {
         }
 
         // dodanie danych do rejestru
-        for (CompletableFuture<Employee> item : cfList) {
-            newEwid.addEmployee(item.get());
+        for (int i = cfList.size()-1; i >= 0; i--) {
+            newEwid.addEmployee(cfList.get(i).get());
         }
         executorService.shutdown();
 

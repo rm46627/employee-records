@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 public abstract class Employee implements Serializable {
 
-    private int hashCode;
     private boolean headship = false;
     private String pesel;
     private String name;
@@ -36,19 +35,17 @@ public abstract class Employee implements Serializable {
         costLimit = newCostLimit;
     }
     protected void setPhoneNumber(String newNum){ phoneNumber = newNum;}
-    protected void setHashCode(int hash) {hashCode = hash;}
 
     protected boolean hasHeadship(){
         return headship;
     }
-    protected int getHashCode() {return hashCode;}
     protected String getPesel(){
         return pesel;
     }
     protected String getName(){
         return name;
     }
-    protected String getSurname(){
+    public String getSurname(){
         return surname;
     }
     protected BigDecimal getSalary(){
