@@ -40,9 +40,9 @@ class TestRegister {
         Employee result = register.addTrader(pesel, name, surname, salary, num, commision, limit);
 
         //then
-        Assertions.assertEquals(result, register.employeeList.get(0));
-        Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertEquals(pesel, register.peselList.get(0));
+        Assertions.assertEquals(result, register.getEmployee(0));
+        Assertions.assertEquals(1, register.getEmployeeCounter());
+        Assertions.assertEquals(pesel, register.getPesel(0));
     }
     //1.2
     @Test
@@ -64,9 +64,9 @@ class TestRegister {
         Employee result = register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
 
         //then
-        Assertions.assertEquals(result, register.employeeList.get(0));
-        Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertEquals(pesel, register.peselList.get(0));
+        Assertions.assertEquals(result, register.getEmployee(0));
+        Assertions.assertEquals(1, register.getEmployeeCounter());
+        Assertions.assertEquals(pesel, register.getPesel(0));
     }
     //1.3
     @Test
@@ -97,9 +97,9 @@ class TestRegister {
         Employee result = register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
 
         //then
-        Assertions.assertEquals(result, register.employeeList.get(1));
-        Assertions.assertEquals(2, register.employeeCounter);
-        Assertions.assertEquals(pesel2, register.peselList.get(1));
+        Assertions.assertEquals(result, register.getEmployee(1));
+        Assertions.assertEquals(2, register.getEmployeeCounter());
+        Assertions.assertEquals(pesel2, register.getPesel(1));
     }
     //1.4
     @Test
@@ -129,9 +129,9 @@ class TestRegister {
         Employee result = register.addDirector(pesel, name, surname, salary, num, bonus, card, limit);
 
         //then
-        Assertions.assertEquals(result, register.employeeList.get(1));
-        Assertions.assertEquals(2, register.employeeCounter);
-        Assertions.assertEquals(pesel, register.peselList.get(1));
+        Assertions.assertEquals(result, register.getEmployee(1));
+        Assertions.assertEquals(2, register.getEmployeeCounter());
+        Assertions.assertEquals(pesel, register.getPesel(1));
     }
     //1.5
     @Test
@@ -239,27 +239,27 @@ class TestRegister {
 
 
         //then
-        Assertions.assertEquals(10, register.employeeCounter);
-        Assertions.assertEquals(result, register.employeeList.get(0));
-        Assertions.assertEquals(pesel, register.peselList.get(0));
-        Assertions.assertEquals(result2, register.employeeList.get(1));
-        Assertions.assertEquals(pesel2, register.peselList.get(1));
-        Assertions.assertEquals(result3, register.employeeList.get(2));
-        Assertions.assertEquals(pesel3, register.peselList.get(2));
-        Assertions.assertEquals(result4, register.employeeList.get(3));
-        Assertions.assertEquals(pesel4, register.peselList.get(3));
-        Assertions.assertEquals(result5, register.employeeList.get(4));
-        Assertions.assertEquals(pesel5, register.peselList.get(4));
-        Assertions.assertEquals(result6, register.employeeList.get(5));
-        Assertions.assertEquals(pesel6, register.peselList.get(5));
-        Assertions.assertEquals(result7, register.employeeList.get(6));
-        Assertions.assertEquals(pesel7, register.peselList.get(6));
-        Assertions.assertEquals(result8, register.employeeList.get(7));
-        Assertions.assertEquals(pesel8, register.peselList.get(7));
-        Assertions.assertEquals(result9, register.employeeList.get(8));
-        Assertions.assertEquals(pesel9, register.peselList.get(8));
-        Assertions.assertEquals(result10, register.employeeList.get(9));
-        Assertions.assertEquals(pesel10, register.peselList.get(9));
+        Assertions.assertEquals(10, register.getEmployeeCounter());
+        Assertions.assertEquals(result, register.getEmployee(0));
+        Assertions.assertEquals(pesel, register.getPesel(0));
+        Assertions.assertEquals(result2, register.getEmployee(1));
+        Assertions.assertEquals(pesel2, register.getPesel(1));
+        Assertions.assertEquals(result3, register.getEmployee(2));
+        Assertions.assertEquals(pesel3, register.getPesel(2));
+        Assertions.assertEquals(result4, register.getEmployee(3));
+        Assertions.assertEquals(pesel4, register.getPesel(3));
+        Assertions.assertEquals(result5, register.getEmployee(4));
+        Assertions.assertEquals(pesel5, register.getPesel(4));
+        Assertions.assertEquals(result6, register.getEmployee(5));
+        Assertions.assertEquals(pesel6, register.getPesel(5));
+        Assertions.assertEquals(result7, register.getEmployee(6));
+        Assertions.assertEquals(pesel7, register.getPesel(6));
+        Assertions.assertEquals(result8, register.getEmployee(7));
+        Assertions.assertEquals(pesel8, register.getPesel(7));
+        Assertions.assertEquals(result9, register.getEmployee(8));
+        Assertions.assertEquals(pesel9, register.getPesel(8));
+        Assertions.assertEquals(result10, register.getEmployee(9));
+        Assertions.assertEquals(pesel10, register.getPesel(9));
     }
     //1.6
     @Test
@@ -290,9 +290,9 @@ class TestRegister {
         register.removeEmployee(fired);
 
         //then
-        Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertEquals(result, register.employeeList.get(0));
-        Assertions.assertEquals(pesel, register.peselList.get(0));
+        Assertions.assertEquals(1, register.getEmployeeCounter());
+        Assertions.assertEquals(result, register.getEmployee(0));
+        Assertions.assertEquals(pesel, register.getPesel(0));
     }
     //1.7
     @Test
@@ -323,9 +323,9 @@ class TestRegister {
         register.removeEmployee(fired);
 
         //then
-        Assertions.assertEquals(1, register.employeeCounter);
-        Assertions.assertEquals(result, register.employeeList.get(0));
-        Assertions.assertEquals(pesel2, register.peselList.get(0));
+        Assertions.assertEquals(1, register.getEmployeeCounter());
+        Assertions.assertEquals(result, register.getEmployee(0));
+        Assertions.assertEquals(pesel2, register.getPesel(0));
     }
     //1.8
 
@@ -333,22 +333,22 @@ class TestRegister {
     @ValueSource(strings = {"98083006138", "97072963579", "96022134778", "95032295336", "94061153676", "93051254237", "92113032555", "91120172544", "90090265423", "89031212347" })
     void checkPesels_correct(String pesel) {
         Register validator = new Register();
-        Assertions.assertTrue(validator.peselValidation(pesel));
+        Assertions.assertTrue(validator.isPeselValid(pesel));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"99131111234", "98123264864", "01332264375", "22345623978", "66373965483", "78446777564", "33994353426", "95453125256", "92635456879", "00000000000" })
     void checkPesels_wrong(String pesel) {
         Register validator = new Register();
-        Assertions.assertFalse(validator.peselValidation(pesel));
+        Assertions.assertFalse(validator.isPeselValid(pesel));
     }
 
     @ParameterizedTest
     @MethodSource("provide2Parameters_peselUniqueness")
     void peselUniqueness_2strings(String pesel1, String pesel2, boolean result) {
         Register validator = new Register();
-        validator.peselList.add(pesel1);
-        Assertions.assertEquals(result, validator.checkUniquenessPesel(pesel2));
+        validator.addPesel(pesel1);
+        Assertions.assertEquals(result, validator.isPeselUnique(pesel2));
     }
     private static Stream<Arguments> provide2Parameters_peselUniqueness() {
         return Stream.of(
@@ -369,11 +369,11 @@ class TestRegister {
     @MethodSource("provide5Parameters_peselUniqueness")
     void peselUniqueness_5strings(String pesel1, String pesel2, String pesel3, String pesel4, String pesel5, boolean result) {
         Register validator = new Register();
-        validator.peselList.add(pesel1);
-        validator.peselList.add(pesel2);
-        validator.peselList.add(pesel3);
-        validator.peselList.add(pesel4);
-        Assertions.assertEquals(result, validator.checkUniquenessPesel(pesel5));
+        validator.addPesel(pesel1);
+        validator.addPesel(pesel2);
+        validator.addPesel(pesel3);
+        validator.addPesel(pesel4);
+        Assertions.assertEquals(result, validator.isPeselUnique(pesel5));
     }
     private static Stream<Arguments> provide5Parameters_peselUniqueness() {
         return Stream.of(
@@ -389,6 +389,8 @@ class TestRegister {
         //given
         Register register = new Register();
 
+        register.addTrader("98083005544", "Andrzej", "Grabowski", new BigDecimal(5500), "505976372", new BigDecimal(5), new BigDecimal(3999));
+
         //then
         Assertions.assertFalse(register.isRegistryEmpty());
     }
@@ -396,16 +398,7 @@ class TestRegister {
     @Test
     public void isRegistryEmpty_True(){
         //given
-        String pesel = "98083006138";
-        String name = "Tadeusz";
-        String surname = "Drozda";
-        BigDecimal salary = new BigDecimal(3400);
-        String num = "505980868";
-        BigDecimal commision = new BigDecimal(3);
-        BigDecimal limit = new BigDecimal(250);
-
         Register register = new Register();
-        register.addTrader(pesel, name, surname, salary, num, commision, limit);
 
         //then
         Assertions.assertTrue(register.isRegistryEmpty());
@@ -426,7 +419,7 @@ class TestRegister {
         register.addTrader(pesel, name, surname, salary, num, commision, limit);
 
         //when
-        Employee test = register.employeeList.get(0);
+        Employee test = register.getEmployee(0);
 
         //then
         Assertions.assertNotNull(test);
@@ -438,10 +431,10 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        int result = register.employeeList.size();
+        boolean result = register.isRegistryEmpty();
 
         //then
-        Assertions.assertEquals(0, result);
+        Assertions.assertTrue(result);
     }
 
     @Test
@@ -463,9 +456,9 @@ class TestRegister {
         register.addEmployee(test);
 
         //then
-        Assertions.assertEquals(test, register.employeeList.get(1));
-        Assertions.assertEquals(2, register.employeeCounter);
-        Assertions.assertEquals(pesel, register.peselList.get(1));
+        Assertions.assertEquals(test, register.getEmployee(1));
+        Assertions.assertEquals(2, register.getEmployeeCounter());
+        Assertions.assertEquals(pesel, register.getPesel(1));
     }
 
     @Test
@@ -537,8 +530,8 @@ class TestRegister {
         Register result = register.readRegistryBackup("druga.zip");
 
         //then
-        Assertions.assertEquals(register.employeeList.get(0).getSurname(), result.employeeList.get(0).getSurname());
-        Assertions.assertEquals(register.employeeList.get(1).getSurname(), result.employeeList.get(1).getSurname());
+        Assertions.assertEquals(register.getEmployee(0).printData(), result.getEmployee(0).printData());
+        Assertions.assertEquals(register.getEmployee(1).printData(), result.getEmployee(1).printData());
 
         //end
         File file = new File("druga.zip");
@@ -574,8 +567,8 @@ class TestRegister {
         Register result = register.readRegistryBackup("druga.tar.gz");
 
         //then
-        Assertions.assertEquals(register.employeeList.get(0).getSurname(), result.employeeList.get(0).getSurname());
-        Assertions.assertEquals(register.employeeList.get(1).getSurname(), result.employeeList.get(1).getSurname());
+        Assertions.assertEquals(register.getEmployee(0).printData(), result.getEmployee(0).printData());
+        Assertions.assertEquals(register.getEmployee(1).printData(), result.getEmployee(1).printData());
 
         //end
         File file = new File("druga.tar.gz");
@@ -593,6 +586,41 @@ class TestRegister {
         //end
         File file = new File("tenPlikNieIstnieje");
         file.delete();
+    }
+
+    @Test
+    public void addCustomDataToEmployee(){
+        //given
+        String pesel = "98083006138";
+        String name = "Mariusz";
+        String surname = "Budzynski";
+        BigDecimal salary = new BigDecimal(13000);
+        String num = "505980868";
+        BigDecimal bonus = new BigDecimal(1500);
+        String card = "1";
+        BigDecimal limit = new BigDecimal(3000);
+
+        String pesel2 = "98083006139";
+        String name2 = "Tadeusz";
+        String surname2 = "Drozda";
+        BigDecimal salary2 = new BigDecimal(3400);
+        String num2 = "505980868";
+        BigDecimal commision = new BigDecimal(3);
+        BigDecimal limit2 = new BigDecimal(250);
+
+        Register register = new Register();
+        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addTrader(pesel2, name2, surname2, salary2,num2, commision, limit2);
+
+        register.getEmployee(0).addCustom("city", "Szczecin");
+        register.getEmployee(0).addCustom("hobby", "painting");
+        register.getEmployee(1).addCustom("city", "Warszawa");
+        register.getEmployee(1).addCustom("hobby", "tennis");
+
+        Assertions.assertTrue(register.getEmployee(0).printData().contains("Szczecin"));
+        Assertions.assertTrue(register.getEmployee(0).printData().contains("painting"));
+        Assertions.assertTrue(register.getEmployee(1).printData().contains("Warszawa"));
+        Assertions.assertTrue(register.getEmployee(1).printData().contains("tennis"));
     }
 
 }

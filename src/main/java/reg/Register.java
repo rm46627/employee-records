@@ -25,13 +25,20 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class Register implements Serializable {
-    public List<Employee> employeeList = new ArrayList<>();
-    public int employeeCounter = 0;
-    public final List<String> peselList = new ArrayList<>();
+    private List<Employee> employeeList = new ArrayList<>();
+    private int employeeCounter = 0;
+    private final List<String> peselList = new ArrayList<>();
 
     public Register() {
     }
 
+    public Employee getEmployee(int i) {
+        return employeeList.get(i);
+    }
+    public int getEmployeeCounter() {
+        return employeeCounter;
+    }
+    public String getPesel(int i) { return peselList.get(i); }
     public Employee addDirector(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal bonus, String card , BigDecimal limit) {
         Director newEmp = new Director();
         newEmp.setHeadship();
@@ -48,7 +55,6 @@ public class Register implements Serializable {
         employeeList.add(newEmp);
         return newEmp;
     }
-
     public Employee addTrader(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal commission, BigDecimal limit) {
         Trader newEmpl = new Trader();
         newEmpl.setName(name);
@@ -63,20 +69,19 @@ public class Register implements Serializable {
         employeeList.add(newEmpl);
         return newEmpl;
     }
-
     public void addEmployee(Employee employee) {
         employeeList.add(employee);
         employeeCounter++;
         peselList.add(employee.getPesel());
     }
-
     public void removeEmployee(Employee toDelete) {
         removePesel(toDelete.getPesel());
         employeeList.remove(toDelete);
         employeeCounter--;
     }
 
-    public boolean checkUniquenessPesel(String newPesel) {
+    //pesel
+    public boolean isPeselUnique(String newPesel) {
         if (peselList.size() > 0) {
             for (String item : peselList) {
                 if (item.equals(newPesel)) {
@@ -86,8 +91,7 @@ public class Register implements Serializable {
         }
         return true;
     }
-
-    public boolean peselValidation(String pesel){
+    public boolean isPeselValid(String pesel){
         //pesel ma 11 cyfr
         if(pesel.length() == 11) {
             char month1 = pesel.charAt(2);
@@ -106,7 +110,6 @@ public class Register implements Serializable {
         }
         return false;
     }
-
     private void removePesel(String oldPesel) {
         if (peselList.size() > 0) {
             for (String item : peselList) {
@@ -117,11 +120,18 @@ public class Register implements Serializable {
             }
         }
     }
-
     public boolean isRegistryEmpty() {
-        return employeeList.size() != 0;
+        return employeeCounter == 0;
     }
+    public boolean addPesel(String pesel){
+        if(isPeselUnique(pesel) && isPeselValid(pesel)){
+            peselList.add(pesel);
+            return true;
+        }
+        return false;
+    };
 
+    // backup
     private void saveEmployee(Employee employee) throws IOException {
         String fileToZip = employee.getPesel();
         FileOutputStream file = new FileOutputStream(fileToZip);
@@ -130,7 +140,6 @@ public class Register implements Serializable {
         out.close();
         file.close();
     }
-
     private void saveEmpleyeesFiles() throws InterruptedException, ExecutionException {
         List<CompletableFuture<Void>> cfList = new ArrayList<>(employeeCounter);
         ExecutorService executorService = Executors.newFixedThreadPool(8);
@@ -152,7 +161,6 @@ public class Register implements Serializable {
         allFutures.get();
         executorService.shutdown();
     }
-
     public Register saveRegistryBackup(Register register, String filename, String gOrZ) throws ExecutionException, InterruptedException, IOException {
         if (employeeCounter != 0) {
             List<String> filepaths = new ArrayList<>(peselList);
@@ -165,7 +173,6 @@ public class Register implements Serializable {
         }
         return register;
     }
-
     private void gzipCompression(String filename, List<String> filepaths) throws IOException {
         Path output = Paths.get(filename + ".tar.gz");
         try (OutputStream fOut = Files.newOutputStream(output);
@@ -183,7 +190,6 @@ public class Register implements Serializable {
             tOut.finish();
         }
     }
-
     private void zipCompression(String filename, List<String> filepaths) throws IOException {
         filename += ".zip";
         FileOutputStream fos = new FileOutputStream(filename);
@@ -204,7 +210,6 @@ public class Register implements Serializable {
         }
         zipOut.close();
     }
-
     private Employee readEmployee(String dest) throws IOException, ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream(dest);
         ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -214,7 +219,6 @@ public class Register implements Serializable {
         fileIn.close();
         return input;
     }
-
     public Register readRegistryBackup(String filename) throws ExecutionException, IOException, InterruptedException {
         // input stream
         String extension = filename.substring(filename.length() - 2);
@@ -267,7 +271,6 @@ public class Register implements Serializable {
 
         return newEwid;
     }
-
     private void unGzip(String dest, BufferedInputStream bi) throws IOException {
         GzipCompressorInputStream gzi = new GzipCompressorInputStream(bi);
         TarArchiveInputStream ti = new TarArchiveInputStream(gzi);
@@ -277,7 +280,6 @@ public class Register implements Serializable {
             Files.copy(ti, destPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
-
     private void unZip(String dest, BufferedInputStream bi) throws IOException {
         ZipInputStream gzi = new ZipInputStream(bi);
         ZipEntry entry;
