@@ -1,4 +1,4 @@
-package reg;
+package registerLogic;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;

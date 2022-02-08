@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
-import reg.*;
+import registerLogic.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -622,5 +622,4 @@ class TestRegister {
         Assertions.assertTrue(register.getEmployee(1).printData().contains("Warszawa"));
         Assertions.assertTrue(register.getEmployee(1).printData().contains("tennis"));
     }
-
 }

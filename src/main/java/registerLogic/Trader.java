@@ -1,4 +1,4 @@
-package reg;
+package registerLogic;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
