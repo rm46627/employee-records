@@ -39,8 +39,8 @@ public class Register implements Serializable {
         return employeeCounter;
     }
     public String getPesel(int i) { return peselList.get(i); }
-    public Employee addDirector(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal bonus, String card , BigDecimal limit) {
-        Director newEmp = new Director();
+    public Employee addManager(String pesel, String name, String surname, BigDecimal salary, String phoneNum, BigDecimal bonus, String card , BigDecimal limit) {
+        Manager newEmp = new Manager();
         newEmp.setHeadship();
         newEmp.setName(name);
         newEmp.setSurname(surname);

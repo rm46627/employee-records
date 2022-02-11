@@ -61,7 +61,7 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        Employee result = register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        Employee result = register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
 
         //then
         Assertions.assertEquals(result, register.getEmployee(0));
@@ -93,7 +93,7 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         Employee result = register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
 
         //then
@@ -126,7 +126,7 @@ class TestRegister {
 
         //when
         register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
-        Employee result = register.addDirector(pesel, name, surname, salary, num, bonus, card, limit);
+        Employee result = register.addManager(pesel, name, surname, salary, num, bonus, card, limit);
 
         //then
         Assertions.assertEquals(result, register.getEmployee(1));
@@ -226,15 +226,15 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        Employee result = register.addDirector(pesel, name, surname, salary, num, bonus, card, limit);
+        Employee result = register.addManager(pesel, name, surname, salary, num, bonus, card, limit);
         Employee result2 = register.addTrader(pesel2, name2, surname2, salary2, num2, commision2, limit2);
-        Employee result3 = register.addDirector(pesel3, name3, surname3, salary3, num3, bonus3, card3, limit3);
+        Employee result3 = register.addManager(pesel3, name3, surname3, salary3, num3, bonus3, card3, limit3);
         Employee result4 = register.addTrader(pesel4, name4, surname4, salary4, num4, commision4, limit4);
-        Employee result5 = register.addDirector(pesel5, name5, surname5, salary5, num5, bonus5, card5, limit5);
+        Employee result5 = register.addManager(pesel5, name5, surname5, salary5, num5, bonus5, card5, limit5);
         Employee result6 = register.addTrader(pesel6, name6, surname6, salary6, num6, commision6, limit6);
-        Employee result7 = register.addDirector(pesel7, name7, surname7, salary7, num7, bonus7, card7, limit7);
+        Employee result7 = register.addManager(pesel7, name7, surname7, salary7, num7, bonus7, card7, limit7);
         Employee result8 = register.addTrader(pesel8, name8, surname8, salary8, num8, commision8, limit8);
-        Employee result9 = register.addDirector(pesel9, name9, surname9, salary9, num9, bonus9, card9, limit9);
+        Employee result9 = register.addManager(pesel9, name9, surname9, salary9, num9, bonus9, card9, limit9);
         Employee result10 = register.addTrader(pesel10, name10, surname10, salary10, num10, commision10, limit10);
 
 
@@ -285,7 +285,7 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        Employee result = register.addDirector(pesel, name, surname, salary, num, bonus, card, limit);
+        Employee result = register.addManager(pesel, name, surname, salary, num, bonus, card, limit);
         Employee fired = register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
         register.removeEmployee(fired);
 
@@ -318,7 +318,7 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        Employee fired = register.addDirector(pesel, name, surname, salary, num, bonus, card, limit);
+        Employee fired = register.addManager(pesel, name, surname, salary, num, bonus, card, limit);
         Employee result = register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
         register.removeEmployee(fired);
 
@@ -452,7 +452,7 @@ class TestRegister {
         Register register = new Register();
 
         //when
-        Employee test = register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        Employee test = register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         register.addEmployee(test);
 
         //then
@@ -483,7 +483,7 @@ class TestRegister {
         BigDecimal limit2 = new BigDecimal(250);
 
         Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
 
         //when
@@ -522,7 +522,7 @@ class TestRegister {
         BigDecimal limit2 = new BigDecimal(250);
 
         Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         register.addTrader(pesel2, name2, surname2, salary2, num2, commision, limit2);
 
         //when
@@ -559,7 +559,7 @@ class TestRegister {
         BigDecimal limit2 = new BigDecimal(250);
 
         Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         register.addTrader(pesel2, name2, surname2, salary2,num2, commision, limit2);
 
         //when
@@ -609,7 +609,7 @@ class TestRegister {
         BigDecimal limit2 = new BigDecimal(250);
 
         Register register = new Register();
-        register.addDirector(pesel, name, surname, salary,num, bonus, card , limit);
+        register.addManager(pesel, name, surname, salary,num, bonus, card , limit);
         register.addTrader(pesel2, name2, surname2, salary2,num2, commision, limit2);
 
         register.getEmployee(0).addCustom("city", "Szczecin");

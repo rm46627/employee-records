@@ -7,10 +7,10 @@ import java.awt.*;
 
 public class ProgramFrame extends JFrame {
 
+    static MainPanel mainPanel = new MainPanel();;
     HeaderPanel header = new HeaderPanel();
     FooterPanel footer = new FooterPanel();
     NavigationPanel navigation = new NavigationPanel();
-    ActionPanel action = new ActionPanel();
 
     Register reg = new Register();
 
@@ -23,12 +23,11 @@ public class ProgramFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // defines action to X button - default is HIDE_ON_CLOSE
         this.getContentPane().setBackground(Color.black);
 
-
         // setting panels
         this.add(header, BorderLayout.NORTH);
         this.add(footer, BorderLayout.SOUTH);
         this.add(navigation, BorderLayout.WEST);
-        this.add(action, BorderLayout.CENTER);
+        this.add(mainPanel, BorderLayout.CENTER);
 
     }
 }

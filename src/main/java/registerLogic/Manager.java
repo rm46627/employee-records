@@ -3,12 +3,12 @@ package registerLogic;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-class Director extends Employee implements Serializable {
+class Manager extends Employee implements Serializable {
 
     private BigDecimal bonus;
     private String businessCard;
 
-    public Director(){}
+    public Manager(){}
 
     protected void setBonus(BigDecimal sum){
         bonus = sum;
@@ -24,7 +24,7 @@ class Director extends Employee implements Serializable {
     }
 
     public String printData() {
-        StringBuilder out = new StringBuilder(String.format("Director%n%s%nbonus: %s%nbussines card: %s", printCommonData(), bonus, businessCard));
+        StringBuilder out = new StringBuilder(String.format("Manager%n%s%nbonus: %s%nbussines card: %s", printCommonData(), bonus, businessCard));
         if(customLabel.size() > 0) {
             out.append("\ncustom data:\n");
             for (int i = 0; i < customLabel.size(); i++) {
