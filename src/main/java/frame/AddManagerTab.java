@@ -1,32 +1,23 @@
 package frame;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class AddManagerTab extends JButton implements ActionListener {
+public class AddManagerTab extends JPanel {
+
+    TabHeaderComponent header;
+
     public AddManagerTab() {
-    }
-
-
-    public CloseBtn() {
-        this.setPreferredSize(new Dimension(10, 10));
-        setContentAreaFilled(false);
-        setFocusable(false);
-        setBorder(BorderFactory.createEtchedBorder());
-        setBorderPainted(false);
-//            addMouseListener(buttonMouseListener);
-//            setRolloverEnabled(true);
-        //Close the proper tab by clicking the button
-        addActionListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        int i = tabbedPane.indexOfTabComponent(TabCloseBtn.this);
-        if (i != -1) {
-            pane.remove(i);
-        }
+        JPanel panel = new JPanel(false);
+        JLabel filler = new JLabel();
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1, 1));
+        panel.add(filler);
+        header = new TabHeaderComponent("Manager");
     }
 }
