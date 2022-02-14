@@ -65,8 +65,9 @@ public class MainPanel extends JPanel implements ActionListener {
             tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, managerTab.header);
         }
         if(e.getSource() == addTraderBtn){
-            JComponent traderTab = addTraderTab();
+            AddTraderTab traderTab = new AddTraderTab();
             tabbedPane.addTab("Trader", traderTab);
+            tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, traderTab.header);
         }
 
     }
