@@ -1,18 +1,18 @@
 package frame;
 
-import registerLogic.Register;
+import register.Register;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ProgramFrame extends JFrame {
 
-    static MainPanel mainPanel = new MainPanel();;
+    static MainPanel mainPanel = new MainPanel();
     HeaderPanel header = new HeaderPanel();
     FooterPanel footer = new FooterPanel();
     NavigationPanel navigation = new NavigationPanel();
 
-    Register reg = new Register();
+    public static Register reg = new Register();
 
     public ProgramFrame(){
         // frame options
