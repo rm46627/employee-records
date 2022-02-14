@@ -9,9 +9,15 @@ public class MainPanel extends JPanel implements ActionListener {
 
     JPanel labelAndButtons = new JPanel();
     JLabel panelTitle = new JLabel("Main panel");
+    JTabbedPane tabbedPane = new JTabbedPane();
+
+    // add data
     JButton addManagerBtn = new JButton("Add manager");
     JButton addTraderBtn = new JButton("Add trader");
-    JTabbedPane tabbedPane = new JTabbedPane();
+
+    // view data
+    JButton viewAllBtn = new JButton("All in one");
+    JButton viewSeparatedBtn = new JButton("Separated");
 
 
     MainPanel(){
@@ -19,6 +25,8 @@ public class MainPanel extends JPanel implements ActionListener {
         panelTitle.setVisible(false);
         addManagerBtn.setVisible(false);
         addTraderBtn.setVisible(false);
+        viewAllBtn.setVisible(false);
+        viewSeparatedBtn.setVisible(false);
 
         // setting up layouts
         this.setLayout(new BorderLayout());
@@ -37,9 +45,11 @@ public class MainPanel extends JPanel implements ActionListener {
         c.gridx = 0;
         c.gridy = 1;
         labelAndButtons.add(addManagerBtn, c);
+        labelAndButtons.add(viewAllBtn, c);
         c.gridx = 2;
         c.gridy = 1;
         labelAndButtons.add(addTraderBtn, c);
+        labelAndButtons.add(viewSeparatedBtn, c);
     }
 
     public void AddDataPanel() {
@@ -47,14 +57,21 @@ public class MainPanel extends JPanel implements ActionListener {
         panelTitle.setVisible(true);
         addManagerBtn.setVisible(true);
         addTraderBtn.setVisible(true);
+        viewAllBtn.setVisible(false);
+        viewSeparatedBtn.setVisible(false);
         addManagerBtn.addActionListener(this);
         addTraderBtn.addActionListener(this);
     }
 
     public void ViewDataPanel() {
         panelTitle.setText("View data panel");
+        panelTitle.setVisible(true);
         addManagerBtn.setVisible(false);
         addTraderBtn.setVisible(false);
+        viewAllBtn.setVisible(true);
+        viewSeparatedBtn.setVisible(true);
+        viewAllBtn.addActionListener(this);
+        viewSeparatedBtn.addActionListener(this);
     }
 
     @Override
@@ -64,10 +81,15 @@ public class MainPanel extends JPanel implements ActionListener {
             tabbedPane.addTab("Manager", managerTab);
             tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, managerTab.header);
         }
-        if(e.getSource() == addTraderBtn){
+        else if(e.getSource() == addTraderBtn){
             AddTraderTab traderTab = new AddTraderTab();
             tabbedPane.addTab("Trader", traderTab);
             tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, traderTab.header);
+        }
+        else if(e.getSource() == viewAllBtn){
+            ViewAllTab allTab = new ViewAllTab();
+            tabbedPane.addTab("All data", allTab);
+            tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, allTab.header);
         }
 
     }

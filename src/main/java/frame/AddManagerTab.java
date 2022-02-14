@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AddManagerTab extends JPanel implements ActionListener{
 
-    TabComponent header;
+    TabComponent header = new TabComponent("Manager");
     JPanel panel = new JPanel(false);
     Font font1 = new Font("SansSerif", Font.ITALIC, 25);
     JButton submitBtn = new JButton("Submit");
@@ -27,8 +27,6 @@ public class AddManagerTab extends JPanel implements ActionListener{
         scroller.getVerticalScrollBar().setUnitIncrement(16);
         setLayout(new BorderLayout());
         add(scroller, BorderLayout.CENTER);
-
-        header = new TabComponent("Manager");
 
         JTextField pesel = new JTextField("PESEL");
         JTextField name = new JTextField("Name", 30);
@@ -64,10 +62,10 @@ public class AddManagerTab extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // adds new menager to data register
         if(e.getSource() == submitBtn){
-            Register rr = ProgramFrame.reg;
+            Register reg = ProgramFrame.reg;
 
             // adding data to register
-            rr.addManager(
+            reg.addManager(
                     standardFields.get(0).getText(), // pesel
                     standardFields.get(1).getText(), // name
                     standardFields.get(2).getText(), // surname
@@ -80,7 +78,7 @@ public class AddManagerTab extends JPanel implements ActionListener{
 
             // adding data to employee from custom fields
             for(int i=0; i < customFields.size();){
-                rr.getEmployee(rr.getEmployeeCounter()-1).addCustom(
+                reg.getEmployee(reg.getEmployeeCounter()-1).addCustom(
                         customFields.get(i).getText(), // label
                         customFields.get(i+1).getText() // value
                 );

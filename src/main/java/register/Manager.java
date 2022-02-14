@@ -26,7 +26,6 @@ class Manager extends Employee implements Serializable {
     public String printData() {
         StringBuilder out = new StringBuilder(String.format("Manager%n%s%nbonus: %s%nbussines card: %s", printCommonData(), bonus, businessCard));
         if(customLabel.size() > 0) {
-            out.append("\ncustom data:\n");
             for (int i = 0; i < customLabel.size(); i++) {
                 out.append(String.format("%20s: %s", customLabel.get(i), customData.get(i)));
             }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AddTraderTab extends JPanel implements ActionListener{
 
-    TabComponent header;
+    TabComponent header = new TabComponent("Trader");
     JPanel panel = new JPanel(false);
     Font font1 = new Font("SansSerif", Font.ITALIC, 25);
     JButton submitBtn = new JButton("Submit");
@@ -21,15 +21,12 @@ public class AddTraderTab extends JPanel implements ActionListener{
     List<JTextField> standardFields = new ArrayList<>();
     List<JTextField> customFields = new ArrayList<>();
 
-
     public AddTraderTab() {
         panel.setLayout(new GridLayout(0, 1, 0, 7));
         JScrollPane scroller = new JScrollPane(panel);
         scroller.getVerticalScrollBar().setUnitIncrement(16);
         setLayout(new BorderLayout());
         add(scroller, BorderLayout.CENTER);
-
-        header = new TabComponent("Trader");
 
         JTextField pesel = new JTextField("PESEL");
         JTextField name = new JTextField("Name", 30);
@@ -73,7 +70,7 @@ public class AddTraderTab extends JPanel implements ActionListener{
                     new BigDecimal(Integer. parseInt(standardFields.get(3).getText())), // salary
                     standardFields.get(4).getText(), // phone number
                     new BigDecimal(Integer. parseInt(standardFields.get(5).getText())), // commission
-                    new BigDecimal(Integer. parseInt(standardFields.get(7).getText())) // limit
+                    new BigDecimal(Integer. parseInt(standardFields.get(6).getText())) // limit
             );
 
             // adding data to employee from custom fields
