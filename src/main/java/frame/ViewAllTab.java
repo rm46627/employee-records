@@ -13,7 +13,7 @@ public class ViewAllTab extends JPanel implements ActionListener {
 
     TabComponent header = new TabComponent("All data");
     JPanel panel = new JPanel(false);
-    Font font1 = new Font("SansSerif", Font.ITALIC, 20);
+    Font font1 = new Font("SansSerif", Font.PLAIN, 20);
     JButton copyBtn = new JButton("Copy to clipboard");
 
     String text = "<html>";

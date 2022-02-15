@@ -46,7 +46,7 @@ class TestRegister {
     }
     //1.2
     @Test
-    public void addDirector_emptyRegister(){
+    public void addManager_emptyRegister(){
 
         //given
         String pesel = "98083006138";
@@ -103,7 +103,7 @@ class TestRegister {
     }
     //1.4
     @Test
-    public void addDirector_RegisterNotEmpty() {
+    public void addManager_RegisterNotEmpty() {
         //given
         String pesel = "98083006138";
         String name = "Mariusz";
@@ -296,7 +296,7 @@ class TestRegister {
     }
     //1.7
     @Test
-    public void removeEmployee_Director_RegisterNotEmpty(){
+    public void removeEmployee_Manager_RegisterNotEmpty(){
         //given
         String pesel = "98083006138";
         String name = "Mariusz";

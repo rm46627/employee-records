@@ -9,7 +9,7 @@ public class MainPanel extends JPanel implements ActionListener {
 
     JPanel labelAndButtons = new JPanel();
     JLabel panelTitle = new JLabel("Main panel");
-    JTabbedPane tabbedPane = new JTabbedPane();
+    static JTabbedPane tabbedPane = new JTabbedPane();
 
     // add data
     JButton addManagerBtn = new JButton("Add manager");
