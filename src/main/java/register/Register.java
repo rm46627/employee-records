@@ -296,5 +296,4 @@ public class Register implements Serializable {
             Files.copy(gzi, destPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
-
 }

@@ -92,7 +92,7 @@ public class AddManagerTab extends JPanel implements ActionListener{
                 standardFields.get(7).setText("Limit has to be numeric!");
             }
             else {
-                // adding data to register
+                // adding employee to register
                 reg.addManager(
                         pesel,
                         standardFields.get(1).getText(), // name
@@ -123,8 +123,6 @@ public class AddManagerTab extends JPanel implements ActionListener{
                     field.setEnabled(false);
                 }
             }
-
-
         }
 
         // adding textfields for custom data

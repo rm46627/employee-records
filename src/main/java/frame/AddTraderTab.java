@@ -90,7 +90,7 @@ public class AddTraderTab extends JPanel implements ActionListener{
                 standardFields.get(6).setText("Limit has to be numeric!");
             }
             else {
-                // adding data to register
+                // adding employee to register
                 reg.addTrader(
                         pesel,
                         standardFields.get(1).getText(), // name

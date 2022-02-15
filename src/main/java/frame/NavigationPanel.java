@@ -31,6 +31,11 @@ public class NavigationPanel extends JPanel implements ActionListener {
         viewDataBtn.addActionListener(this);
         viewDataBtn.setToolTipText("Open panel that allows to view data from register.");
         this.add(viewDataBtn);
+        // close all tabs in tabbedPane
+        closeTabsBtn.setText("Close all tabs");
+        closeTabsBtn.setFocusable(false);
+        closeTabsBtn.addActionListener(this);
+        this.add(closeTabsBtn);
         // add example data to the register
         addExampleBtn.setText("Add example data");
         addExampleBtn.setFocusable(false);
@@ -38,11 +43,6 @@ public class NavigationPanel extends JPanel implements ActionListener {
         addExampleBtn.setBackground(Color.white);
         addExampleBtn.setToolTipText("Adds one manager and two trader data to register.");
         this.add(addExampleBtn);
-        // close all tabs in tabbedPane
-        closeTabsBtn.setText("Close all tabs");
-        closeTabsBtn.setFocusable(false);
-        closeTabsBtn.addActionListener(this);
-        this.add(closeTabsBtn);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class NavigationPanel extends JPanel implements ActionListener {
             Register reg = ProgramFrame.reg;
             reg.addTrader("98083005544", "Andrzej", "Grabowski", new BigDecimal(5500), "505976372", new BigDecimal(5), new BigDecimal(3999));
             reg.addTrader("95022254632", "Michal", "Dowacki", new BigDecimal(4050), "8764387647", new BigDecimal(2), new BigDecimal(2000));
-            reg.addManager("9306117564", "Krzysztof", "Braniecki", new BigDecimal(5000), "879243445", new BigDecimal(500), "007", new BigDecimal(5000));
+            reg.addManager("93061175647", "Krzysztof", "Braniecki", new BigDecimal(5000), "879243445", new BigDecimal(500), "007", new BigDecimal(5000));
             addExampleBtn.setEnabled(false);
         }else if(e.getSource() == closeTabsBtn){
             MainPanel.tabbedPane.removeAll();
