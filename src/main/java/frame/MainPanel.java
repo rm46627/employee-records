@@ -1,5 +1,7 @@
 package frame;
 
+import register.Register;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -91,7 +93,14 @@ public class MainPanel extends JPanel implements ActionListener {
             tabbedPane.addTab("All data", allTab);
             tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, allTab.header);
         }
-
+        else if(e.getSource() == viewSeparatedBtn){
+            Register reg = ProgramFrame.reg;
+            for(int i = 0; i < reg.getEmployeeCounter(); i++){
+                ViewOneTab oneTab = new ViewOneTab(reg.getEmployee(i));
+                tabbedPane.addTab("one Data", oneTab);
+                tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, oneTab.header);
+            }
+        }
     }
 
     protected JComponent addTraderTab() {

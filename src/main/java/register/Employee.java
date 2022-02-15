@@ -43,13 +43,20 @@ public abstract class Employee implements Serializable {
     protected boolean hasHeadship(){
         return headship;
     }
+    public String getJob(){
+        if (hasHeadship()){
+            return "Manager";
+        } else {
+            return "Trader";
+        }
+    }
     protected String getPesel(){
         return pesel;
     }
     protected String getName(){
         return name;
     }
-    protected String getSurname(){
+    public String getSurname(){
         return surname;
     }
     protected BigDecimal getSalary(){
