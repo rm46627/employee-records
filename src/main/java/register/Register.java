@@ -130,6 +130,14 @@ public class Register implements Serializable {
         }
         return false;
     };
+    public boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 
     // backup
     private void saveEmployee(Employee employee) throws IOException {

@@ -60,35 +60,65 @@ public class AddTraderTab extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // adds new trader to data register
         if(e.getSource() == submitBtn){
-            Register rr = ProgramFrame.reg;
+            Register reg = ProgramFrame.reg;
 
-            // adding data to register
-            rr.addTrader(
-                    standardFields.get(0).getText(), // pesel
-                    standardFields.get(1).getText(), // name
-                    standardFields.get(2).getText(), // surname
-                    new BigDecimal(Integer. parseInt(standardFields.get(3).getText())), // salary
-                    standardFields.get(4).getText(), // phone number
-                    new BigDecimal(Integer. parseInt(standardFields.get(5).getText())), // commission
-                    new BigDecimal(Integer. parseInt(standardFields.get(6).getText())) // limit
-            );
+            standardFields.get(0).setBackground(Color.white);
+            standardFields.get(3).setBackground(Color.white);
+            standardFields.get(5).setBackground(Color.white);
+            standardFields.get(6).setBackground(Color.white);
 
-            // adding data to employee from custom fields
-            for(int i=0; i < customFields.size();){
-                rr.getEmployee(rr.getEmployeeCounter()-1).addCustom(
-                        customFields.get(i).getText(), // label
-                        customFields.get(i+1).getText() // value
+            String pesel = standardFields.get(0).getText();
+            String salary = standardFields.get(3).getText();
+            String commission = standardFields.get(5).getText();
+            String limit = standardFields.get(6).getText();
+
+            // checking data
+            if(!reg.isPeselValid(pesel) || !reg.isPeselUnique(pesel)){
+                standardFields.get(0).setBackground(Color.red);
+                standardFields.get(0).setText("Wrong PESEL!");
+            }
+            else if(!reg.isNumeric(salary)){
+                standardFields.get(3).setBackground(Color.red);
+                standardFields.get(3).setText("Salary has to be numeric!");
+            }
+            else if(!reg.isNumeric(commission)){
+                standardFields.get(5).setBackground(Color.red);
+                standardFields.get(5).setText("Commission has to be numeric!");
+            }
+            else if(!reg.isNumeric(limit)){
+                standardFields.get(6).setBackground(Color.red);
+                standardFields.get(6).setText("Limit has to be numeric!");
+            }
+            else {
+                // adding data to register
+                reg.addTrader(
+                        pesel,
+                        standardFields.get(1).getText(), // name
+                        standardFields.get(2).getText(), // surname
+                        new BigDecimal(Integer.parseInt(salary)),
+                        standardFields.get(4).getText(), // phone number
+                        new BigDecimal(Integer.parseInt(commission)),
+                        new BigDecimal(Integer.parseInt(limit))
                 );
-                i = i+2;
-            }
 
-            // setting textfields not accesable
-            submitBtn.setEnabled(false);
-            for(JTextField field : standardFields){
-                field.setEnabled(false);
-            }
-            for(JTextField field : customFields){
-                field.setEnabled(false);
+                // adding data to employee from custom fields
+                for (int i = 0; i < customFields.size(); ) {
+                    reg.getEmployee(reg.getEmployeeCounter() - 1).addCustom(
+                            customFields.get(i).getText(), // label
+                            customFields.get(i + 1).getText() // value
+                    );
+                    i = i + 2;
+                }
+
+                // setting textfields not accesable
+                submitBtn.setEnabled(false);
+                addCustomFieldsBtn.setEnabled(false);
+                for (JTextField field : standardFields) {
+                    field.setEnabled(false);
+                }
+                for (JTextField field : customFields) {
+                    field.setEnabled(false);
+                }
             }
         }
 
