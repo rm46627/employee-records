@@ -52,6 +52,11 @@ public class MainPanel extends JPanel implements ActionListener {
         c.gridy = 1;
         labelAndButtons.add(addTraderBtn, c);
         labelAndButtons.add(viewSeparatedBtn, c);
+
+        addManagerBtn.addActionListener(this);
+        addTraderBtn.addActionListener(this);
+        viewAllBtn.addActionListener(this);
+        viewSeparatedBtn.addActionListener(this);
     }
 
     public void AddDataPanel() {
@@ -61,8 +66,6 @@ public class MainPanel extends JPanel implements ActionListener {
         addTraderBtn.setVisible(true);
         viewAllBtn.setVisible(false);
         viewSeparatedBtn.setVisible(false);
-        addManagerBtn.addActionListener(this);
-        addTraderBtn.addActionListener(this);
     }
 
     public void ViewDataPanel() {
@@ -72,13 +75,12 @@ public class MainPanel extends JPanel implements ActionListener {
         addTraderBtn.setVisible(false);
         viewAllBtn.setVisible(true);
         viewSeparatedBtn.setVisible(true);
-        viewAllBtn.addActionListener(this);
-        viewSeparatedBtn.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == addManagerBtn){
+            System.out.println("DODAJE TAB MANAGERA");
             AddManagerTab managerTab = new AddManagerTab();
             tabbedPane.addTab("Manager", managerTab);
             tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, managerTab.header);
