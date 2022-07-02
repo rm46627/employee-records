@@ -17,7 +17,7 @@ public class LoadWindow extends JFrame implements ActionListener {
     JButton loadBtn = new JButton("Load");
 
     public LoadWindow(){
-        this.setTitle("Save register");
+        this.setTitle("Load register");
         this.setSize(600,400);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
